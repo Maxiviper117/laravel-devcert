@@ -124,10 +124,36 @@ class HostsFileManager
     private function write(array $lines): void
     {
         $path = $this->path();
-        $result = file_put_contents($path, implode(PHP_EOL, $lines).PHP_EOL);
 
-        if ($result === false) {
-            throw new RuntimeException('Unable to write hosts file at '.$path);
+        $handle = fopen($path, 'c+');
+        if ($handle === false) {
+            throw new RuntimeException('Unable to open hosts file for writing at '.$path);
+        }
+
+        try {
+            // Acquire exclusive lock (blocking)
+            if (! flock($handle, LOCK_EX)) {
+                throw new RuntimeException('Unable to acquire lock on hosts file at '.$path);
+            }
+
+            // Truncate and write
+            ftruncate($handle, 0);
+            rewind($handle);
+
+            $content = implode(PHP_EOL, $lines).PHP_EOL;
+            $written = fwrite($handle, $content);
+
+            if ($written === false || $written !== strlen($content)) {
+                throw new RuntimeException('Failed to write complete content to hosts file at '.$path);
+            }
+
+            // Flush to disk before releasing lock
+            fflush($handle);
+
+            // Release lock
+            flock($handle, LOCK_UN);
+        } finally {
+            fclose($handle);
         }
     }
 }

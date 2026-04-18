@@ -10,6 +10,7 @@ Laravel Devcert automates trusted local HTTPS for Laravel projects with `mkcert`
 - [Run Your App Over HTTPS](#run-your-app-over-https)
 - [Installation](#installation)
 - [Configuration](#configuration)
+- [Security](#security)
 - [Testing](#testing)
 
 ## Before You Run It
@@ -61,17 +62,17 @@ If you are on another Linux distribution or want the official references, use:
 
 ## Commands
 
-| Command | What it does |
-| --- | --- |
-| `php artisan local-https:setup [domain]` | Sets up trusted local HTTPS for the current project. |
-| `php artisan local-https:status` | Shows the current local HTTPS state. |
-| `php artisan local-https:hosts:scan` | Lists domains currently found in the hosts file. |
-| `php artisan local-https:hosts:add {domain}` | Adds a domain to the hosts file. |
-| `php artisan local-https:remove {domain}` | Removes the package-managed HTTPS setup for a domain. |
-| `php artisan local-https:link-existing [domain]` | Connects the project to an already existing local domain. |
-| `php artisan local-https:domain [domain]` | Prints the domain the package would use. |
-| `php artisan local-https:cert:generate {domain} [--force]` | Generates a certificate and key for a domain. |
-| `php artisan local-https:caddy [domain] [--to=...]` | Runs Caddy as a local HTTPS reverse proxy. |
+| Command                                                    | What it does                                              |
+| ---------------------------------------------------------- | --------------------------------------------------------- |
+| `php artisan local-https:setup [domain]`                   | Sets up trusted local HTTPS for the current project.      |
+| `php artisan local-https:status`                           | Shows the current local HTTPS state.                      |
+| `php artisan local-https:hosts:scan`                       | Lists domains currently found in the hosts file.          |
+| `php artisan local-https:hosts:add {domain}`               | Adds a domain to the hosts file.                          |
+| `php artisan local-https:remove {domain}`                  | Removes the package-managed HTTPS setup for a domain.     |
+| `php artisan local-https:link-existing [domain]`           | Connects the project to an already existing local domain. |
+| `php artisan local-https:domain [domain]`                  | Prints the domain the package would use.                  |
+| `php artisan local-https:cert:generate {domain} [--force]` | Generates a certificate and key for a domain.             |
+| `php artisan local-https:caddy [domain] [--to=...]`        | Runs Caddy as a local HTTPS reverse proxy.                |
 
 ### `php artisan local-https:setup [domain]`
 
@@ -376,6 +377,38 @@ What each option does:
   - Default: `false`
 
 If you change any of these values, run `php artisan local-https:status` again to confirm the paths and domain match what you expect.
+
+## Security
+
+### Certificate File Permissions
+
+The package creates certificate files with secure permissions:
+
+- Certificate directories: `0700` (owner only)
+- Certificate and key files: `0600` (owner read/write only)
+
+This ensures private keys are not readable by other users on the system.
+
+### Domain Name Validation
+
+The package validates domain names to prevent malformed entries:
+
+- Rejects domains containing spaces
+- Rejects domains with consecutive dots (`..`)
+- Rejects labels starting or ending with hyphens
+- Validates against RFC 1123 hostname format
+- Enforces maximum lengths (253 characters total, 63 per label)
+
+### Hosts File Safety
+
+The package uses file locking when writing to the hosts file to prevent corruption during concurrent access.
+
+### Elevation Requirements
+
+Modifying the hosts file requires elevated privileges:
+
+- **Windows**: Run PowerShell as Administrator
+- **Linux/macOS**: Use `sudo` or ensure the hosts file is writable
 
 ## Testing
 
