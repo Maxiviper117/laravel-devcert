@@ -38,7 +38,7 @@ class MkcertService
         $directory = dirname($certPath);
 
         if (! is_dir($directory)) {
-            mkdir($directory, 0777, true);
+            mkdir($directory, 0700, true);
         }
 
         $hosts = [$domain];

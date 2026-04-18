@@ -37,10 +37,23 @@ class CertificateStore
         $paths = $this->paths($domain);
 
         if (! is_dir($paths['directory'])) {
-            mkdir($paths['directory'], 0777, true);
+            mkdir($paths['directory'], 0700, true);
         }
 
         return $paths;
+    }
+
+    public function setPermissions(string $domain): void
+    {
+        $paths = $this->paths($domain);
+
+        if (file_exists($paths['cert'])) {
+            chmod($paths['cert'], 0600);
+        }
+
+        if (file_exists($paths['key'])) {
+            chmod($paths['key'], 0600);
+        }
     }
 
     public function exists(string $domain): bool
