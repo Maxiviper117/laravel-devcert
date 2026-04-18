@@ -29,14 +29,14 @@ class SetupLocalHttpsAction
         $messages[] = 'mkcert trust store checked';
 
         $this->hosts->add($resolvedDomain);
-        $messages[] = 'Hosts entry ensured for ' . $resolvedDomain;
+        $messages[] = 'Hosts entry ensured for '.$resolvedDomain;
 
         $paths = $this->certificates->ensureDirectory($resolvedDomain);
         if ($force || ! $this->certificates->exists($resolvedDomain)) {
             $this->mkcert->generate($resolvedDomain, $paths['cert'], $paths['key']);
-            $messages[] = 'Certificate generated for ' . $resolvedDomain;
+            $messages[] = 'Certificate generated for '.$resolvedDomain;
         } else {
-            $messages[] = 'Certificate reused for ' . $resolvedDomain;
+            $messages[] = 'Certificate reused for '.$resolvedDomain;
         }
 
         $this->environment->update([

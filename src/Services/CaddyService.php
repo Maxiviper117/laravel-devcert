@@ -36,9 +36,9 @@ class CaddyService
     public function buildCaddyfile(string $domain, string $upstream, string $certPath, string $keyPath): string
     {
         return implode(PHP_EOL, [
-            $domain . ' {',
+            $domain.' {',
             sprintf('    tls %s %s', $this->escapeCaddyfilePath($certPath), $this->escapeCaddyfilePath($keyPath)),
-            '    reverse_proxy ' . $upstream,
+            '    reverse_proxy '.$upstream,
             '}',
             '',
         ]);

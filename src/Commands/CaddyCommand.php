@@ -3,10 +3,10 @@
 namespace Maxiviper117\LaravelDevcert\Commands;
 
 use Illuminate\Console\Command;
-use RuntimeException;
 use Maxiviper117\LaravelDevcert\Services\CaddyService;
 use Maxiviper117\LaravelDevcert\Services\CertificateStore;
 use Maxiviper117\LaravelDevcert\Services\DomainManager;
+use RuntimeException;
 
 class CaddyCommand extends Command
 {

@@ -2,8 +2,8 @@
 
 namespace Maxiviper117\LaravelDevcert\Services;
 
-use RuntimeException;
 use Maxiviper117\LaravelDevcert\Support\OperatingSystem;
+use RuntimeException;
 
 class HostsFileManager
 {

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Maxiviper117\LaravelDevcert\Services;
 
-use RuntimeException;
 use Maxiviper117\LaravelDevcert\Contracts\ProcessRunner;
+use RuntimeException;
 
 class MkcertService
 {

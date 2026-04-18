@@ -1,7 +1,7 @@
 <?php
 
-use Maxiviper117\LaravelDevcert\Support\OperatingSystem;
 use Maxiviper117\LaravelDevcert\Services\CertificateStore;
+use Maxiviper117\LaravelDevcert\Support\OperatingSystem;
 
 it('expands the shared certificate path from tilde', function () {
     $profile = sys_get_temp_dir().DIRECTORY_SEPARATOR.'devcert-profile';
