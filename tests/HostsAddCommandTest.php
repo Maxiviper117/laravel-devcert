@@ -27,3 +27,17 @@ it('adds a domain with different TLD', function () {
         ->expectsOutputToContain('Hosts entry added')
         ->assertSuccessful();
 });
+
+it('displays permission error when hosts file is not writable', function () {
+    $path = tempnam(sys_get_temp_dir(), 'hosts');
+    file_put_contents($path, "127.0.0.1 alpha.test\n");
+    chmod($path, 0444);
+
+    config()->set('laravel-devcert.hosts_path', $path);
+
+    $this->artisan('local-https:hosts:add beta.test')
+        ->assertFailed();
+
+    chmod($path, 0666);
+    unlink($path);
+});

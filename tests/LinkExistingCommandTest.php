@@ -70,3 +70,17 @@ it('fails when no domains exist in hosts file', function () {
         ->expectsOutputToContain('No existing domain found')
         ->assertFailed();
 });
+
+it('displays permission error when hosts file is not writable', function () {
+    $path = tempnam(sys_get_temp_dir(), 'hosts');
+    file_put_contents($path, "127.0.0.1 alpha.test\n");
+    chmod($path, 0444);
+
+    config()->set('laravel-devcert.hosts_path', $path);
+
+    $this->artisan('local-https:link-existing alpha.test')
+        ->assertFailed();
+
+    chmod($path, 0666);
+    unlink($path);
+});

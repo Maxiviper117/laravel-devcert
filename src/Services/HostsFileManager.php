@@ -2,6 +2,7 @@
 
 namespace Maxiviper117\LaravelDevcert\Services;
 
+use Maxiviper117\LaravelDevcert\Exceptions\HostsFilePermissionException;
 use Maxiviper117\LaravelDevcert\Support\OperatingSystem;
 use RuntimeException;
 
@@ -125,7 +126,11 @@ class HostsFileManager
     {
         $path = $this->path();
 
-        $handle = fopen($path, 'c+');
+        if (! is_writable($path)) {
+            throw HostsFilePermissionException::forPath($path);
+        }
+
+        $handle = @fopen($path, 'c+');
         if ($handle === false) {
             throw new RuntimeException('Unable to open hosts file for writing at '.$path);
         }
