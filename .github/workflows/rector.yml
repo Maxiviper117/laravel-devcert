@@ -1,0 +1,48 @@
+name: Rector
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  push:
+    branches:
+      - main
+    paths:
+      - '**.php'
+      - 'rector.php'
+      - 'composer.json'
+      - 'composer.lock'
+      - '.github/workflows/rector.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  rector:
+    name: rector
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          coverage: none
+
+      - name: Install composer dependencies
+        uses: ramsey/composer-install@v3
+
+      - name: Ensure Rector cache directory exists
+        run: mkdir -p build/rector
+
+      - name: Cache Rector results
+        uses: actions/cache@v4
+        with:
+          path: build/rector
+          key: rector-${{ runner.os }}-${{ hashFiles('rector.php', 'composer.lock') }}
+          restore-keys: |
+            rector-${{ runner.os }}-
+
+      - name: Run Rector (dry-run)
+        run: vendor/bin/rector process --dry-run

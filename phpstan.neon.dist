@@ -7,4 +7,11 @@ parameters:
         - src
         - config
         - database
+    excludePaths:
+        analyse:
+            - workbench/*
+            - workbench/**
+        analyseAndScan:
+            - workbench/*
+            - workbench/**
     tmpDir: build/phpstan
