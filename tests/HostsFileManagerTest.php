@@ -22,7 +22,7 @@ HOSTS);
     $hosts->add('alpha.test');
     $contents = file_get_contents($path);
 
-    expect(collect(file($path, FILE_IGNORE_NEW_LINES) ?: [])->filter(fn(string $line) => trim($line) === '127.0.0.1 alpha.test' || trim($line) === '::1 alpha.test')->count())->toBe(2);
+    expect(collect(file($path, FILE_IGNORE_NEW_LINES) ?: [])->filter(fn (string $line) => trim($line) === '127.0.0.1 alpha.test' || trim($line) === '::1 alpha.test')->count())->toBe(2);
 
     unlink($path);
 });
@@ -53,7 +53,7 @@ it('throws HostsFilePermissionException when hosts file is not writable', functi
 
     $hosts = app(HostsFileManager::class);
 
-    expect(fn() => $hosts->add('beta.test'))
+    expect(fn () => $hosts->add('beta.test'))
         ->toThrow(HostsFilePermissionException::class);
 
     chmod($path, 0666);
@@ -70,7 +70,7 @@ it('throws HostsFilePermissionException when removing from non-writable hosts fi
 
     $hosts = app(HostsFileManager::class);
 
-    expect(fn() => $hosts->remove('alpha.test'))
+    expect(fn () => $hosts->remove('alpha.test'))
         ->toThrow(HostsFilePermissionException::class);
 
     chmod($path, 0666);
