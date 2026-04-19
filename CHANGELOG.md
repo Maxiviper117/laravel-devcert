@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/Maxiviper117/laravel-devcert/compare/v1.0.0...v1.1.0) (2026-04-19)
+
+
+### Features
+
+* add security improvements and comprehensive test coverage ([#2](https://github.com/Maxiviper117/laravel-devcert/issues/2)) ([55177e0](https://github.com/Maxiviper117/laravel-devcert/commit/55177e01f9e7cc991a8d5f734623499135f567fe))
+
 ## 1.0.0 (2026-04-18)
 
 
