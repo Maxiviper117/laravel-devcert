@@ -34,6 +34,7 @@ class SetupLocalHttpsAction
         $paths = $this->certificates->ensureDirectory($resolvedDomain);
         if ($force || ! $this->certificates->exists($resolvedDomain)) {
             $this->mkcert->generate($resolvedDomain, $paths['cert'], $paths['key']);
+            $this->certificates->setPermissions($resolvedDomain);
             $messages[] = 'Certificate generated for '.$resolvedDomain;
         } else {
             $messages[] = 'Certificate reused for '.$resolvedDomain;
