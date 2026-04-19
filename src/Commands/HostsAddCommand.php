@@ -3,6 +3,7 @@
 namespace Maxiviper117\LaravelDevcert\Commands;
 
 use Illuminate\Console\Command;
+use Maxiviper117\LaravelDevcert\Exceptions\HostsFilePermissionException;
 use Maxiviper117\LaravelDevcert\Services\HostsFileManager;
 
 class HostsAddCommand extends Command
@@ -13,7 +14,14 @@ class HostsAddCommand extends Command
 
     public function handle(HostsFileManager $hosts): int
     {
-        $hosts->add($this->argument('domain'));
+        try {
+            $hosts->add($this->argument('domain'));
+        } catch (HostsFilePermissionException $hostsFilePermissionException) {
+            $this->error($hostsFilePermissionException->getMessage());
+
+            return self::FAILURE;
+        }
+
         $this->info('Hosts entry added.');
 
         return self::SUCCESS;

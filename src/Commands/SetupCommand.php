@@ -4,6 +4,7 @@ namespace Maxiviper117\LaravelDevcert\Commands;
 
 use Illuminate\Console\Command;
 use Maxiviper117\LaravelDevcert\Actions\SetupLocalHttpsAction;
+use Maxiviper117\LaravelDevcert\Exceptions\HostsFilePermissionException;
 
 class SetupCommand extends Command
 {
@@ -13,11 +14,17 @@ class SetupCommand extends Command
 
     public function handle(SetupLocalHttpsAction $setup): int
     {
-        $result = $setup->execute(
-            $this->argument('domain'),
-            (bool) $this->option('force'),
-            (bool) $this->option('skip-vite'),
-        );
+        try {
+            $result = $setup->execute(
+                $this->argument('domain'),
+                (bool) $this->option('force'),
+                (bool) $this->option('skip-vite'),
+            );
+        } catch (HostsFilePermissionException $hostsFilePermissionException) {
+            $this->error($hostsFilePermissionException->getMessage());
+
+            return self::FAILURE;
+        }
 
         $this->components->twoColumnDetail('domain', $result['domain']);
         $this->components->twoColumnDetail('cert', $result['paths']['cert']);
