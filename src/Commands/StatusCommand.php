@@ -3,8 +3,8 @@
 namespace Maxiviper117\LaravelDevcert\Commands;
 
 use Illuminate\Console\Command;
-use Maxiviper117\LaravelDevcert\Commands\Concerns\BlocksWsl;
 use Maxiviper117\LaravelDevcert\Actions\StatusAction;
+use Maxiviper117\LaravelDevcert\Commands\Concerns\BlocksWsl;
 
 class StatusCommand extends Command
 {

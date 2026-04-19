@@ -4,8 +4,8 @@ namespace Maxiviper117\LaravelDevcert\Commands;
 
 use Illuminate\Console\Command;
 use Maxiviper117\LaravelDevcert\Actions\RemoveLocalHttpsAction;
-use Maxiviper117\LaravelDevcert\Exceptions\HostsFilePermissionException;
 use Maxiviper117\LaravelDevcert\Commands\Concerns\BlocksWsl;
+use Maxiviper117\LaravelDevcert\Exceptions\HostsFilePermissionException;
 
 class RemoveCommand extends Command
 {
