@@ -14,7 +14,7 @@ trait BlocksWsl
             return true;
         }
 
-        $this->error('Sorry, WSL is not supported. Run this command from Windows instead.');
+        $this->error('Sorry, WSL is not supported at all. Use this project from a native Windows environment only.');
 
         return false;
     }

@@ -36,7 +36,7 @@ it('blocks the setup command on wsl', function () {
         app()->instance(SetupLocalHttpsAction::class, $setup);
 
         $this->artisan('local-https:setup example.test')
-            ->expectsOutputToContain('WSL is not supported')
+            ->expectsOutputToContain('WSL is not supported at all')
             ->assertExitCode(1);
     } finally {
         if ($originalDistro === false) {
