@@ -1,6 +1,13 @@
 # Laravel Devcert
 
+> [!IMPORTANT]
+> - WSL is not supported. 
+> - WSL port forwarding and hosts file management are not compatible with this package’s workflow. 
+> - Can only be used in a native Windows environment or on Linux/macOS.
+> - The issue for WSL comes down to the Windows Host trusting process and how it manages certificates and hosts entries.
+
 Laravel Devcert automates trusted local HTTPS for Laravel projects with `mkcert`, shared certificate storage, and hosts file management.
+
 
 ## Table of Contents
 
@@ -15,13 +22,25 @@ Laravel Devcert automates trusted local HTTPS for Laravel projects with `mkcert`
 
 ## Before You Run It
 
-`local-https:setup` updates your system hosts file and may need elevated privileges.
+Some commands in this package modify your system hosts file and therefore require elevated privileges. When prompted to modify the hosts file, run a terminal as Administrator on Windows or prefix the command with `sudo` on Linux/macOS.
 
-- Windows PowerShell: open a new terminal as Administrator before running the command.
-  - From an existing PowerShell window: `Start-Process powershell -Verb RunAs`
-  - If you use Windows Terminal: `Start-Process wt -Verb RunAs`
-- Linux/macOS bash: run the command with `sudo` if your hosts file is protected.
-  - Example: `sudo php artisan local-https:setup example.test`
+Commands that require administrator privileges:
+
+- `php artisan local-https:setup [domain]` — sets up local HTTPS, adds hosts entries, generates certificates, and updates `.env`.
+- `php artisan local-https:hosts:add {domain}` — writes the domain to the hosts file.
+- `php artisan local-https:remove {domain}` — removes hosts entries and deletes certificate files.
+- `php artisan local-https:link-existing [domain]` — links the project to an existing host entry and may modify the hosts file.
+
+Windows — open PowerShell or Windows Terminal as Administrator before running these commands:
+
+- From PowerShell: `Start-Process powershell -Verb RunAs`
+- From an existing PowerShell window (Windows Terminal): `Start-Process wt -Verb RunAs`
+
+Linux/macOS — prefix the command with `sudo` if the hosts file is protected. Example:
+
+```bash
+sudo php artisan local-https:setup example.test
+```
 
 ## Install Caddy And mkcert
 

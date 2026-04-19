@@ -3,16 +3,23 @@
 namespace Maxiviper117\LaravelDevcert\Commands;
 
 use Illuminate\Console\Command;
+use Maxiviper117\LaravelDevcert\Commands\Concerns\BlocksWsl;
 use Maxiviper117\LaravelDevcert\Actions\StatusAction;
 
 class StatusCommand extends Command
 {
+    use BlocksWsl;
+
     protected $signature = 'local-https:status';
 
     protected $description = 'Show local HTTPS status';
 
     public function handle(StatusAction $statusAction): int
     {
+        if (! $this->guardAgainstWsl()) {
+            return self::FAILURE;
+        }
+
         $status = $statusAction->execute();
         $guideUrl = 'https://github.com/Maxiviper117/laravel-devcert';
 

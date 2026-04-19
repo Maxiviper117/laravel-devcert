@@ -3,6 +3,7 @@
 namespace Maxiviper117\LaravelDevcert\Commands;
 
 use Illuminate\Console\Command;
+use Maxiviper117\LaravelDevcert\Commands\Concerns\BlocksWsl;
 use Maxiviper117\LaravelDevcert\Services\CaddyService;
 use Maxiviper117\LaravelDevcert\Services\CertificateStore;
 use Maxiviper117\LaravelDevcert\Services\DomainManager;
@@ -10,6 +11,8 @@ use RuntimeException;
 
 class CaddyCommand extends Command
 {
+    use BlocksWsl;
+
     private const HELP_URL = 'https://github.com/Maxiviper117/laravel-devcert';
 
     protected $signature = 'local-https:caddy {domain?} {--to= : Upstream URL to proxy to}';
@@ -18,6 +21,10 @@ class CaddyCommand extends Command
 
     public function handle(DomainManager $domains, CertificateStore $certificates, CaddyService $caddy): int
     {
+        if (! $this->guardAgainstWsl()) {
+            return self::FAILURE;
+        }
+
         if (! $caddy->installed()) {
             throw new RuntimeException('Caddy is not installed or not available on PATH. See '.self::HELP_URL.' for setup instructions.');
         }
