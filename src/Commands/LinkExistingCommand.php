@@ -4,17 +4,24 @@ namespace Maxiviper117\LaravelDevcert\Commands;
 
 use Illuminate\Console\Command;
 use Maxiviper117\LaravelDevcert\Actions\LinkExistingAction;
+use Maxiviper117\LaravelDevcert\Commands\Concerns\BlocksWsl;
 use Maxiviper117\LaravelDevcert\Exceptions\HostsFilePermissionException;
 use Maxiviper117\LaravelDevcert\Services\HostsFileManager;
 
 class LinkExistingCommand extends Command
 {
+    use BlocksWsl;
+
     protected $signature = 'local-https:link-existing {domain?}';
 
     protected $description = 'Link the project to an existing domain';
 
     public function handle(LinkExistingAction $linkExisting, HostsFileManager $hosts): int
     {
+        if (! $this->guardAgainstWsl()) {
+            return self::FAILURE;
+        }
+
         $domains = $hosts->scan();
         $domain = $this->argument('domain') ?: ($domains !== [] ? $this->choice('Select a domain', $domains) : null);
 

@@ -15,4 +15,19 @@ class OperatingSystem
     {
         return ! self::isWindows();
     }
+
+    public static function isWsl(): bool
+    {
+        if (getenv('WSL_DISTRO_NAME') !== false && getenv('WSL_DISTRO_NAME') !== '') {
+            return true;
+        }
+
+        if (getenv('WSL_INTEROP') !== false && getenv('WSL_INTEROP') !== '') {
+            return true;
+        }
+
+        $release = strtolower(php_uname('r'));
+
+        return str_contains($release, 'microsoft') || str_contains($release, 'wsl');
+    }
 }
