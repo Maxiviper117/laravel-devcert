@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.2.0](https://github.com/Maxiviper117/laravel-devcert/compare/v1.1.0...v1.2.0) (2026-04-19)
+
+
+### Features
+
+* add hosts file permission check with clean error messages ([#4](https://github.com/Maxiviper117/laravel-devcert/issues/4)) ([a90fe5a](https://github.com/Maxiviper117/laravel-devcert/commit/a90fe5aabd6cc1bdebb4f71bc3bc23a55543a1a7))
+* block unsupported WSL usage ([56ed98d](https://github.com/Maxiviper117/laravel-devcert/commit/56ed98d60008727a1ef7b142f43a5e07262a2c08))
+* block unsupported WSL usage ([#5](https://github.com/Maxiviper117/laravel-devcert/issues/5)) ([56ed98d](https://github.com/Maxiviper117/laravel-devcert/commit/56ed98d60008727a1ef7b142f43a5e07262a2c08))
+* improve WSL error messages for clarity ([56ed98d](https://github.com/Maxiviper117/laravel-devcert/commit/56ed98d60008727a1ef7b142f43a5e07262a2c08))
+
 ## [1.1.0](https://github.com/Maxiviper117/laravel-devcert/compare/v1.0.0...v1.1.0) (2026-04-19)
 
 
